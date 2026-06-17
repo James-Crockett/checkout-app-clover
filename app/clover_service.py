@@ -61,25 +61,29 @@ def add_line_item (order_id: str, description: str, amount_cents: int):
     return response.json()
 
 # payment source 
-def pay_order(order_id: str, amount_cents: int):
-    url = f"{CLOVER_PAYMENT_BASE_URL}/v1/orders/{order_id}/pay"
+def pay_order(order_id: str, source_token: str):
+    url = f"https://scl-sandbox.dev.clover.com/v1/orders/{order_id}/pay"
 
     payload = {
-        "source": CLOVER_PAYMENT_SOURCE_TOKEN,
-        "amount": amount_cents,
-        "currency": "usd"
+        "source": source_token
     }
 
     headers = {
-        "Authorization": f"Bearer {CLOVER_ACCESS_TOKEN}",
-        "X-Clover-Merchant-Id": CLOVER_MERCHANT_ID,
+        "Authorization": f"Bearer {CLOVER_ECOMM_PRIVATE_TOKEN}",
         "Content-Type": "application/json",
+        "Accept": "application/json"
     }
 
-    response = requests.post(url, headers=headers, json=payload)
+    response = requests.post(
+        url,
+        headers=headers,
+        json=payload
+    )
 
-    response.raise_for_status()
-    return response.json()
+    return {
+        "status_code": response.status_code,
+        "body": response.text
+    }
 
 def create_card_token():
     url = f"{CLOVER_TOKEN_BASE_URL}/v1/tokens"
