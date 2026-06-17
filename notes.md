@@ -20,9 +20,9 @@ A web based checkout app integrated with a clover api
 # Input
 
 By the requirements, the user has to give:
-    - An amount - int
-    - Product name - char
-    - A trigger after entering or submit action
+- An amount - int
+- Product name - char
+- A trigger after entering or submit action
 
 # Inupt from backend
 
@@ -31,11 +31,11 @@ Clover would have config values, at this stage not sure what values id be using,
 # Backend
 
 After the submission, the backend should:
-    - Validate the amount
-    - Convert to cents since this is a starndard, not complicating with money var
-    - Create clover order
-    - Added line item to order
-    - Initiate payment
-    - Fetch the payment status
-    - Log the transaction
-    - Return the status to the front end
+- Validate the amount
+- Convert to cents since this is a starndard, not complicating with money var
+- Create clover order
+- Added line item to order
+- Initiate payment
+- Fetch the payment status
+- Log the transaction
+- Return the status to the front end
