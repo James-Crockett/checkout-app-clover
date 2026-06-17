@@ -43,6 +43,7 @@ After the submission, the backend should:
 ## Clover Integration
 
 - Create clover config
+- Create clover acc
 - Create env.example file
 - Add Clover deps
 - Create clover service
