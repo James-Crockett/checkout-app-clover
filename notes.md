@@ -13,7 +13,7 @@ python-dotenv - for loading secret tolkens from .env file
 
 Before I go into building the application, I forgot to go into the structure of the assignment/breaking it down.
 
-# Objective of the assignment
+## Objective of the assignment
 
 A web based checkout app integrated with a clover api
 
@@ -24,11 +24,11 @@ By the requirements, the user has to give:
 - Product name - char
 - A trigger after entering or submit action
 
-# Inupt from backend
+## Inupt from backend
 
 Clover would have config values, at this stage not sure what values id be using, have to refer the docs
 
-# Backend
+## Backend
 
 After the submission, the backend should:
 - Validate the amount
