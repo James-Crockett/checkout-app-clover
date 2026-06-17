@@ -109,13 +109,14 @@ def create_payment(payment: PaymentRequest):
     line_item = add_line_item(
         order_id = order_id,
         description = payment.description,
-        amount_cents = cent_conv,
+        amount_cents = cent_conv
     )
 
     #recording transaction
     transaction = {
         "timestamp": datetime.utcnow().isoformat(),   
         "order_id": order_id,
+        "line_item_id": line_item.get("id"),
         "amt_conv_format": cent_conv,
         "description": payment.description,
         "status": "ORDER_CREATED"  
