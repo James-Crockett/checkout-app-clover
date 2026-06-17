@@ -9,6 +9,8 @@ load_dotenv()
 CLOVER_BASE_URL= os.getenv("CLOVER_BASE_URL")
 CLOVER_MERCHANT_ID= os.getenv("CLOVER_MERCHANT_ID")
 CLOVER_ACCESS_TOKEN= os.getenv("CLOVER_ACCESS_TOKEN")
+CLOVER_PAYMENT_BASE_URL = os.getenv("CLOVER_PAYMENT_BASE_URL")
+CLOVER_PAYMENT_SOURCE_TOKEN = os.getenv("CLOVER_PAYMENT_SOURCE_TOKEN")
 
 # auth call and data format
 def get_headers():
@@ -52,5 +54,26 @@ def add_line_item (order_id: str, description: str, amount_cents: int):
     )
     
     # raise exception if any error
+    response.raise_for_status()
+    return response.json()
+
+# payment source 
+def pay_order(order_id: str, amount_cents: int):
+    url = f"{CLOVER_PAYMENT_BASE_URL}/v1/orders/{order_id}/pay"
+
+    payload = {
+        "source": CLOVER_PAYMENT_SOURCE_TOKEN,
+        "amount": amount_cents,
+        "currency": "usd"
+    }
+
+    headers = {
+        "Authorization": f"Bearer {CLOVER_ACCESS_TOKEN}",
+        "X-Clover-Merchant-Id": CLOVER_MERCHANT_ID,
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
     response.raise_for_status()
     return response.json()
