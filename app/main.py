@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# CORS preflight request handling
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -43,6 +44,7 @@ def create_payment(payment: PaymentRequest):
     with open("apt/transaction.log","a") as file:   #logging transaxtion
         file.write(json.dumps(transaction) + "\n")
 
+    # return result to font page
     return{
         "success": True,
         "status":"SUCCESS",
