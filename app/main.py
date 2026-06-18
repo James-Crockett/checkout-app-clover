@@ -123,6 +123,16 @@ def create_payment(payment: PaymentRequest):
 
     # clover returned an unsuccessful HTTP response
     except requests.HTTPError as e:
+        failed_transaction = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "amount": payment.amount,
+            "description": payment.description,
+            "status": "failed",
+            "error": str(e),
+        }
+        with open("app/transaction.log", "a") as file:
+            file.write(json.dumps(failed_transaction) + "\n")
+
         raise HTTPException(
             status_code=502, detail="Clover rejected the payment request"
         ) from e
