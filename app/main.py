@@ -121,4 +121,6 @@ def create_payment(payment: PaymentRequest):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500, detail=f"Payment processing failed: {str(e)}"
+        )
