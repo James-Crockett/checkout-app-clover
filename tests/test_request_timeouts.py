@@ -60,7 +60,11 @@ class RequestTimeoutTests(unittest.TestCase):
         response.json.return_value = {"access_token": "test_token"}
 
         # Confirm the OAuth token exchange limits how long it waits for Clover.
-        with patch("app.main.requests.post", return_value=response) as post:
+        with (
+            patch("app.main.requests.post", return_value=response) as post,
+            patch("builtins.open"),
+            patch("app.main.os.chmod"),
+        ):
             oauth_callback("authorization_code")
 
         self.assertEqual(post.call_args.kwargs["timeout"], 10)
