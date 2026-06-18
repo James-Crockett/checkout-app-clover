@@ -1,20 +1,15 @@
-import os
-import requests
-
 import json
-
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
-
-from pydantic import BaseModel, Field
+import os
 from datetime import datetime
-from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
-from app.clover_service import create_order
-from app.clover_service import add_line_item
-from app.clover_service import create_card_token
-from app.clover_service import pay_order
+import requests
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from pydantic import BaseModel, Field
+
+from app.clover_service import add_line_item, create_card_token, create_order, pay_order
 
 app = FastAPI()
 load_dotenv()
@@ -36,17 +31,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # defining datamodel for request
 # using pydantic to handle validation
 class PaymentRequest(BaseModel):
-    amount: float = Field(gt = 0)                 # amount should always be +ve and greater than 0.
-    description: str = Field(min_length = 1)      # cannot be an empty string
+    amount: float = Field(gt=0)  # amount should always be +ve and greater than 0.
+    description: str = Field(min_length=1)  # cannot be an empty string
+
 
 @app.get("/")
 def root():
-    return {
-        "message": "Payment backend running"
-    }
+    return {"message": "Payment backend running"}
+
 
 # adding oauth routes
 @app.get("/oauth/start")
@@ -59,6 +55,7 @@ def oauth_start():
     )
 
     return RedirectResponse(auth_url)
+
 
 # adding oauth callback
 @app.get("/oauth/callback")
@@ -81,10 +78,11 @@ def oauth_callback(code: str, merchant_id: str | None = None):
         "merchant_id": merchant_id,
     }
 
+
 @app.post("/api/payments")
 def create_payment(payment: PaymentRequest):
 
-    amount_cents = int(payment.amount * 100)       # converting amount to int and cents
+    amount_cents = int(payment.amount * 100)  # converting amount to int and cents
 
     # Create an order
     # Add the requested item as a line item
@@ -97,7 +95,7 @@ def create_payment(payment: PaymentRequest):
     payment_result = pay_order(order["id"], card_token["id"])
     payment_body = json.loads(payment_result["body"])
 
-    #recording transaction
+    # recording transaction
     transaction = {
         "timestamp": datetime.utcnow().isoformat(),
         "order_id": order["id"],
@@ -105,14 +103,12 @@ def create_payment(payment: PaymentRequest):
         "amount": payment.amount,
         "amount_cents": amount_cents,
         "description": payment.description,
-        "status": payment_result["body"]
+        "status": payment_result["body"],
     }
 
-    with open("apt/transaction.log","a") as file:   #logging transaxtion
+    with open("app/transaction.log", "a") as file:  # logging transaxtion
         file.write(json.dumps(transaction) + "\n")
 
-
-    
     # return result to font page
     return {
         "success": True,
@@ -120,5 +116,5 @@ def create_payment(payment: PaymentRequest):
         "order_id": order["id"],
         "amount_paid": payment_body.get("amount_paid"),
         "charge_id": payment_body.get("charge"),
-        "payment": payment_body
+        "payment": payment_body,
     }
