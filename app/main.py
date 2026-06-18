@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from decimal import Decimal
 
 import requests
 from dotenv import load_dotenv
@@ -36,7 +37,7 @@ app.add_middleware(
 # defining datamodel for request
 # using pydantic to handle validation
 class PaymentRequest(BaseModel):
-    amount: float = Field(gt=0)  # amount should always be +ve and greater than 0.
+    amount: Decimal = Field(gt=0)  # amount should always be +ve and greater than 0.
     description: str = Field(min_length=1)  # cannot be an empty string
 
 
@@ -101,7 +102,7 @@ def create_payment(payment: PaymentRequest):
             "timestamp": datetime.utcnow().isoformat(),
             "order_id": order["id"],
             "line_item_id": line_item.get("id"),
-            "amount": payment.amount,
+            "amount": float(payment.amount),
             "amount_cents": amount_cents,
             "description": payment.description,
             "status": payment_body.get("status"),
@@ -125,7 +126,7 @@ def create_payment(payment: PaymentRequest):
     except requests.HTTPError as e:
         failed_transaction = {
             "timestamp": datetime.utcnow().isoformat(),
-            "amount": payment.amount,
+            "amount": float(payment.amount),
             "description": payment.description,
             "status": "failed",
             "error": str(e),
