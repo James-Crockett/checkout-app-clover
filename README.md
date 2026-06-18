@@ -55,10 +55,10 @@ Tokens are stored in `app/oauth_tokens.json` (git-ignored) with owner-only permi
 
 The frontend sends amount and description to `POST /api/payments`
 
-- create an order with `POST /v3/merchants/{merchant_id}/orders`
-- add a line item with `POST /orders/{order_id}/line_items`
-- create a sandbox card token with `POST /v1/tokens`
-- pay the order with `POST /v1/orders/{order_id}/pay`
+- Create an order with `POST /v3/merchants/{merchant_id}/orders`
+- Add a line item with `POST /orders/{order_id}/line_items`
+- Create a sandbox card token with `POST /v1/tokens`
+- Pay the order with `POST /v1/orders/{order_id}/pay`
 
 The response displays payment status and appends it to `app/transaction.log`
 
