@@ -48,3 +48,31 @@ After the submission, the backend should:
 - Add Clover deps
 - Create clover service
 - Write it to /api/payments
+
+## Things I noticed after a initial project completion
+
+- Fix failed payment handling
+
+> when looking at the transaction logs, i saw some transactions failed because the card was used too much and clover recognized it but it gave 200 anyways. this should have been flaged as a failed transaction, it even shows up in the clover portal.
+
+/home/james_crockett/Projects/checkout-app-clover/failed_transactions.png
+
+- Money conversion
+
+> it is using the int var, im not sure it would be a good choice, have to reasearch.
+
+- OAuth is incomplete
+
+> after looking at the document, i realized the token handling is incomplete.
+
+- work on documentation and comments
+
+> have to work on documentation and update comments throughout the repo.
+
+- Error handling
+
+> have to work more on edge cases and error handling, like the first issue.
+
+- Cleanup
+
+> go though the repo and cleanup some stuff.
