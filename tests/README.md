@@ -18,3 +18,8 @@ The current tests cover `create_order()`, `add_line_item()`, `pay_order()`,
 
 Verifies that the OAuth callback stores the access token, refresh token, and
 merchant ID locally with owner-only file permissions.
+
+## `test_token_expiration.py`
+
+Verifies that stored access-token expiration timestamps are compared against the
+current Unix time correctly.

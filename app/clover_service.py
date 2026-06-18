@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -17,6 +18,10 @@ CLOVER_ECOMM_PRIVATE_TOKEN = os.getenv("CLOVER_ECOMM_PRIVATE_TOKEN")
 def load_oauth_tokens():
     with open("app/oauth_tokens.json") as file:
         return json.load(file)
+
+
+def access_token_expired(token_data: dict):
+    return time.time() >= token_data["access_token_expiration"]
 
 
 # auth call and data format
