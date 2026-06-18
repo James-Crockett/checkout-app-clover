@@ -55,7 +55,7 @@ After the submission, the backend should:
 
 > when looking at the transaction logs, i saw some transactions failed because the card was used too much and clover recognized it but it gave 200 anyways. this should have been flaged as a failed transaction, it even shows up in the clover portal.
 
-/home/james_crockett/Projects/checkout-app-clover/failed_transactions.png
+![Failed Clover transactions](failed_transactions.png)
 
 - Money conversion
 
