@@ -1,49 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
+
+<link rel="stylesheet" href="index.css" />
 
 <html>
     <head>
         <title>Checkout</title>
     </head>
-    
+
     <body>
         <h2>Test Checkout</h2>
 
-        <label>Amount</label><br>
-        <input id ="amount" type="number" step="0.01" placeholder="19.99"> <br><br>
+        <label>Amount</label><br />
+        <input id="amount" type="number" step="0.01" placeholder="19.99" />
+        <br /><br />
 
-        <label>Description</label><br>
-        <input id ="description" type="text" step="0.01" placeholder="Desc"> <br><br>
+        <label>Description</label><br />
+        <input id="description" type="text" step="0.01" placeholder="Desc" />
+        <br /><br />
 
         <button onclick="submitPayment()">Submit</button>
-        
+
         <h3>Result</h3>
         <pre id="result"></pre>
-        
+
         <!-- async function -->
         <script>
             async function submitPayment() {
                 const amount = Number(document.getElementById("amount").value);
-                const description = document.getElementById("description").value;
-                
-                // fetch endpoint, update, specify json is sent, convert javascript to JSON 
-                const response = await fetch("http://localhost:8000/api/payments", {
-                    method: "POST",
-                    headers: {
-                    "Content-Type": "application/json"
+                const description =
+                    document.getElementById("description").value;
+
+                // fetch endpoint, update, specify json is sent, convert javascript to JSON
+                const response = await fetch(
+                    "http://localhost:8000/api/payments",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            amount: amount,
+                            description: description,
+                        }),
                     },
-                    body: JSON.stringify({
-                    amount: amount,
-                    description: description
-                    })
-                });
-                
-                // await till server response 
+                );
+
+                // await till server response
                 const data = await response.json();
 
                 // displays the result that we get from the API
-                document.getElementById("result").innerText =
-                    JSON.stringify(data, null, 2);
-                }
+                document.getElementById("result").innerText = JSON.stringify(
+                    data,
+                    null,
+                    2,
+                );
+            }
         </script>
     </body>
 </html>
