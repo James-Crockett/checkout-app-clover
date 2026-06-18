@@ -77,6 +77,8 @@ def create_card_token():
     # sample payload, real info would come from the card readers
     payload = {
         "card": {
+            # this test card will fail if there is a lot of transactions
+            # "number": "4111111111111111",
             "number": "4242424242424242",
             "exp_month": "12",
             "exp_year": "2035",
