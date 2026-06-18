@@ -20,6 +20,9 @@ CLOVER_OAUTH_BASE_URL = os.getenv("CLOVER_OAUTH_BASE_URL")
 CLOVER_APP_ID = os.getenv("CLOVER_APP_ID")
 CLOVER_APP_SECRET = os.getenv("CLOVER_APP_SECRET")
 CLOVER_REDIRECT_URI = os.getenv("CLOVER_REDIRECT_URI")
+CLOVER_OAUTH_AUTHORIZE_URL = os.getenv("CLOVER_OAUTH_AUTHORIZE_URL")
+CLOVER_OAUTH_API_URL = os.getenv("CLOVER_OAUTH_API_URL")
+
 
 # CORS preflight request handling
 app.add_middleware(
@@ -47,7 +50,7 @@ def root():
 @app.get("/oauth/start")
 def oauth_start():
     auth_url = (
-        f"{CLOVER_OAUTH_BASE_URL}/oauth/authorize"
+        f"{CLOVER_OAUTH_AUTHORIZE_URL}/oauth/v2/authorize"
         f"?client_id={CLOVER_APP_ID}"
         f"&redirect_uri={CLOVER_REDIRECT_URI}"
         f"&response_type=code"
@@ -59,7 +62,7 @@ def oauth_start():
 # adding oauth callback
 @app.get("/oauth/callback")
 def oauth_callback(code: str, merchant_id: str | None = None):
-    token_url = f"{CLOVER_OAUTH_BASE_URL}/oauth/token"
+    token_url = f"{CLOVER_OAUTH_API_URL}/oauth/v2/token"
 
     payload = {
         "client_id": CLOVER_APP_ID,
