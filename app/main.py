@@ -16,7 +16,6 @@ from app.clover_service import add_line_item, create_card_token, create_order, p
 app = FastAPI()
 load_dotenv()
 
-CLOVER_OAUTH_BASE_URL = os.getenv("CLOVER_OAUTH_BASE_URL")
 CLOVER_APP_ID = os.getenv("CLOVER_APP_ID")
 CLOVER_APP_SECRET = os.getenv("CLOVER_APP_SECRET")
 CLOVER_REDIRECT_URI = os.getenv("CLOVER_REDIRECT_URI")
