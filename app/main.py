@@ -73,7 +73,13 @@ def oauth_callback(code: str, merchant_id: str | None = None):
 
     response = requests.post(token_url, json=payload, timeout=10)
     response.raise_for_status()
+
+    # stores OAuth tokens locally
     token_data = response.json()
+    token_data["merchant_id"] = merchant_id
+    with open("app/oauth_tokens.json", "w") as file:
+        json.dump(token_data, file)
+    os.chmod("app/oauth_tokens.json", 0o600)
 
     return {
         "status_code": response.status_code,
