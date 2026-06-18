@@ -77,7 +77,7 @@ def create_card_token():
         "card": {
             # this test card will fail if there is a lot of transactions
             # "number": "4111111111111111",
-            "number": "4242424242424242",
+            "number": "4000 0566 5566 5556",
             "exp_month": "12",
             "exp_year": "2035",
             "cvv": "123",

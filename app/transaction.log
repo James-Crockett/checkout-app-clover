@@ -19,3 +19,6 @@
 {"timestamp": "2026-06-18T03:45:49.608298", "amount": 1.0, "description": "miao", "status": "failed", "error": "402 Client Error: Payment Required for url: https://scl-sandbox.dev.clover.com/v1/orders/N0C046A8CWSHG/pay"}
 {"timestamp": "2026-06-18T03:45:53.973776", "amount": 1.0, "description": "miao", "status": "failed", "error": "402 Client Error: Payment Required for url: https://scl-sandbox.dev.clover.com/v1/orders/K0CGFPFWRX7NE/pay"}
 {"timestamp": "2026-06-18T03:45:55.959368", "amount": 1.0, "description": "miao", "status": "failed", "error": "402 Client Error: Payment Required for url: https://scl-sandbox.dev.clover.com/v1/orders/XSAGNWZMKTJPE/pay"}
+{"timestamp": "2026-06-18T05:01:54.747302+00:00", "amount": 34.0, "description": "miao", "status": "failed", "error": "402 Client Error: Payment Required for url: https://scl-sandbox.dev.clover.com/v1/orders/XJBVGZY6T64RW/pay"}
+{"timestamp": "2026-06-18T05:03:48.318833+00:00", "amount": 1.0, "description": "string", "status": "failed", "error": "402 Client Error: Payment Required for url: https://scl-sandbox.dev.clover.com/v1/orders/6R65S80RSHDK2/pay"}
+{"timestamp": "2026-06-18T05:04:46.432171+00:00", "amount": 1.0, "description": "string", "status": "failed", "error": "400 Client Error: Bad Request for url: https://token-sandbox.dev.clover.com/v1/tokens"}

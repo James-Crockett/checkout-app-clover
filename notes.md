@@ -76,3 +76,8 @@ After the submission, the backend should:
 - Cleanup
 
 > go though the repo and cleanup some stuff.
+
+## Initial fixes
+
+- Fixed minor issues and removed/updated unused variables and deps.
+- I have started the auth flow but never finished the lifecycle in OAuth. Also, I used the legacy version of it, i have to update it to v2 version of it. also return tolkens to browser for testing purposes but never removed them.
