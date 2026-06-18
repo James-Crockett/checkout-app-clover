@@ -84,7 +84,7 @@ def oauth_callback(code: str, merchant_id: str | None = None):
 @app.post("/api/payments")
 def create_payment(payment: PaymentRequest):
 
-    cent_conv = int(payment.amount * 100)       # converting amount to int and cents
+    amount_cents = int(payment.amount * 100)       # converting amount to int and cents
 
     # Create an order
     # Add the requested item as a line item
