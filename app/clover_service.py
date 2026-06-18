@@ -32,7 +32,8 @@ def get_headers():
 # creating order id
 def create_order():
     # merchant order dir
-    url = f"{CLOVER_BASE_URL}/v3/merchants/{CLOVER_MERCHANT_ID}/orders"
+    merchant_id = load_oauth_tokens()["merchant_id"]
+    url = f"{CLOVER_BASE_URL}/v3/merchants/{merchant_id}/orders"
 
     # post, in url location, auth call, empty body for blank order
     response = requests.post(url, headers=get_headers(), json={}, timeout=10)
@@ -45,7 +46,8 @@ def create_order():
 # adding items
 def add_line_item(order_id: str, description: str, amount_cents: int):
     # order id dir
-    url = f"{CLOVER_BASE_URL}/v3/merchants/{CLOVER_MERCHANT_ID}/orders/{order_id}/line_items"
+    merchant_id = load_oauth_tokens()["merchant_id"]
+    url = f"{CLOVER_BASE_URL}/v3/merchants/{merchant_id}/orders/{order_id}/line_items"
 
     # item
     payload = {"name": description, "price": amount_cents}

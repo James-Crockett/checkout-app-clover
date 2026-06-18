@@ -21,7 +21,10 @@ class RequestTimeoutTests(unittest.TestCase):
             patch("app.clover_service.requests.post", return_value=response) as post,
             patch(
                 "app.clover_service.load_oauth_tokens",
-                return_value={"access_token": "test_token"},
+                return_value={
+                    "access_token": "test_token",
+                    "merchant_id": "merchant_id",
+                },
             ),
         ):
             create_order()
@@ -38,7 +41,10 @@ class RequestTimeoutTests(unittest.TestCase):
             patch("app.clover_service.requests.post", return_value=response) as post,
             patch(
                 "app.clover_service.load_oauth_tokens",
-                return_value={"access_token": "test_token"},
+                return_value={
+                    "access_token": "test_token",
+                    "merchant_id": "merchant_id",
+                },
             ),
         ):
             add_line_item("order_id", "Test item", 100)
