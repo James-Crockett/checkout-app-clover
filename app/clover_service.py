@@ -45,7 +45,7 @@ def add_line_item(order_id: str, description: str, amount_cents: int):
     payload = {"name": description, "price": amount_cents}
 
     # post, in url location, auth call, order info
-    response = requests.post(url, headers=get_headers(), json=payload)
+    response = requests.post(url, headers=get_headers(), json=payload, timeout=10)
 
     # raise exception if any error
     response.raise_for_status()
@@ -64,7 +64,7 @@ def pay_order(order_id: str, source_token: str):
         "Accept": "application/json",
     }
 
-    response = requests.post(url, headers=headers, json=payload)
+    response = requests.post(url, headers=headers, json=payload, timeout=10)
     response.raise_for_status()
     return {"status_code": response.status_code, "body": response.text}
 
@@ -93,6 +93,6 @@ def create_card_token():
         "Accept": "application/json",
     }
 
-    response = requests.post(url, headers=headers, json=payload)
+    response = requests.post(url, headers=headers, json=payload, timeout=10)
     response.raise_for_status()
     return response.json()
