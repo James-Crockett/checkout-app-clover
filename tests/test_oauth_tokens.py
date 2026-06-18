@@ -1,38 +1,56 @@
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
-from app.clover_service import access_token_expired, refresh_oauth_tokens
+import requests
+
+from app.clover_service import get_headers
 
 
 class OAuthTokenTests(unittest.TestCase):
-    def test_access_token_expiration(self):
-        # fix the current time so both checks are predictable
-        with patch("app.clover_service.time.time", return_value=100):
-            self.assertTrue(
-                access_token_expired({"access_token_expiration": 50})
-            )
-            self.assertFalse(
-                access_token_expired({"access_token_expiration": 150})
-            )
-
-    def test_refresh_returns_new_token_pair(self):
-        # simulate clover returning replacement tokens
-        response = Mock()
-        response.json.return_value = {
+    def test_expired_token_is_refreshed_and_stored(self):
+        # simulate an expired stored token and its replacement
+        stored_tokens = {
+            "access_token": "old_access_token",
+            "access_token_expiration": 50,
+            "refresh_token": "old_refresh_token",
+            "merchant_id": "merchant_id",
+        }
+        new_tokens = {
             "access_token": "new_access_token",
+            "access_token_expiration": 150,
             "refresh_token": "new_refresh_token",
         }
 
-        # replace the real clover request
-        with patch("app.clover_service.requests.post", return_value=response) as post:
-            result = refresh_oauth_tokens("old_refresh_token")
+        with (
+            patch("app.clover_service.time.time", return_value=100),
+            patch("app.clover_service.load_oauth_tokens", return_value=stored_tokens),
+            patch("app.clover_service.refresh_oauth_tokens", return_value=new_tokens),
+            patch("builtins.open"),
+            patch("app.clover_service.json.dump") as dump,
+            patch("app.clover_service.os.chmod"),
+        ):
+            headers = get_headers()
 
-        self.assertEqual(
-            post.call_args.kwargs["json"]["refresh_token"],
-            "old_refresh_token",
-        )
-        self.assertEqual(result["access_token"], "new_access_token")
-        self.assertEqual(result["refresh_token"], "new_refresh_token")
+        self.assertEqual(headers["Authorization"], "Bearer new_access_token")
+        self.assertEqual(dump.call_args.args[0]["merchant_id"], "merchant_id")
+
+    def test_failed_refresh_requires_authorization(self):
+        # return a clear reconnect message when clover rejects the refresh
+        stored_tokens = {
+            "access_token_expiration": 50,
+            "refresh_token": "old_refresh_token",
+        }
+
+        with (
+            patch("app.clover_service.time.time", return_value=100),
+            patch("app.clover_service.load_oauth_tokens", return_value=stored_tokens),
+            patch(
+                "app.clover_service.refresh_oauth_tokens",
+                side_effect=requests.HTTPError(),
+            ),
+            self.assertRaisesRegex(RuntimeError, "/oauth/start"),
+        ):
+            get_headers()
 
 
 if __name__ == "__main__":

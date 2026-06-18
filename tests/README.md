@@ -14,5 +14,5 @@ merchant ID locally with owner-only file permissions.
 
 ## `test_oauth_tokens.py`
 
-Verifies access-token expiration and the refresh request that returns a new token
-pair.
+Verifies that expired tokens are refreshed and stored, and that failed refreshes
+require OAuth authorization again.
