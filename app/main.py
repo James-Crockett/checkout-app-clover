@@ -5,11 +5,10 @@ from decimal import Decimal
 
 import requests
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
-from starlette.exceptions import HTTPException
 
 from app.clover_service import add_line_item, create_card_token, create_order, pay_order
 
@@ -131,18 +130,24 @@ def create_payment(payment: PaymentRequest):
 
     # clover returned an unsuccessful HTTP response
     except requests.HTTPError as e:
+        # keep clover error details for sandbox debugging
+        clover_error = e.response.text if e.response is not None else str(e)
         failed_transaction = {
             "timestamp": datetime.now(UTC).isoformat(),
             "amount": float(payment.amount),
             "description": payment.description,
             "status": "failed",
-            "error": str(e),
+            "error": clover_error,
         }
         with open("app/transaction.log", "a") as file:
             file.write(json.dumps(failed_transaction) + "\n")
 
         raise HTTPException(
-            status_code=502, detail="Clover rejected the payment request"
+            status_code=502,
+            detail={
+                "message": "Clover rejected the payment request",
+                "clover_error": clover_error,
+            },
         ) from e
     # unexpected error
     except Exception as e:

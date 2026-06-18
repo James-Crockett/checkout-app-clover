@@ -119,13 +119,14 @@ def create_card_token():
     payload = {
         "card": {
             # this test card will fail if there is a lot of transactions
-            # "number": "4111111111111111",
-            "number": "4242424242424242",
+            "number": "4111111111111111",
+            # "number": "4242424242424242",
+            # "number": "371449635398431",
             "exp_month": "12",
             "exp_year": "2035",
             "cvv": "123",
-            "last4": "4242",
-            "first6": "424242",
+            "last4": "1111",
+            "first6": "411111",
             "brand": "VISA",
         }
     }
