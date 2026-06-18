@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import UTC, datetime
 from decimal import Decimal
 
 import requests
@@ -96,7 +96,7 @@ def create_payment(payment: PaymentRequest):
 
         # recording transaction
         transaction = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "order_id": order["id"],
             "line_item_id": line_item.get("id"),
             "amount": float(payment.amount),
@@ -122,7 +122,7 @@ def create_payment(payment: PaymentRequest):
     # clover returned an unsuccessful HTTP response
     except requests.HTTPError as e:
         failed_transaction = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "amount": float(payment.amount),
             "description": payment.description,
             "status": "failed",
