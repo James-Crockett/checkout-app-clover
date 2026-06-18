@@ -103,7 +103,8 @@ def create_payment(payment: PaymentRequest):
         "amount": payment.amount,
         "amount_cents": amount_cents,
         "description": payment.description,
-        "status": payment_result["body"],
+        "status": payment_body.get("status"),
+        "charge_id": payment_body.get("charge"),
     }
 
     with open("app/transaction.log", "a") as file:  # logging transaxtion
