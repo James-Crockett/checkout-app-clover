@@ -29,7 +29,7 @@ def create_order():
     url = f"{CLOVER_BASE_URL}/v3/merchants/{CLOVER_MERCHANT_ID}/orders"
 
     # post, in url location, auth call, empty body for blank order
-    response = requests.post(url, headers=get_headers(), json={})
+    response = requests.post(url, headers=get_headers(), json={}, timeout=10)
 
     # raise exception if any error
     response.raise_for_status()
