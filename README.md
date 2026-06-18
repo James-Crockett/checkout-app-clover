@@ -13,6 +13,20 @@ cp .env.example .env
 
 Fill `.env` with Clover sandbox URLs, app credentials, redirect URI, and Ecommerce tokens
 
+| Variable | Purpose |
+| --- | --- |
+| `CLOVER_BASE_URL` | Clover merchant REST API |
+| `CLOVER_APP_ID` / `CLOVER_APP_SECRET` | OAuth app credentials |
+| `CLOVER_REDIRECT_URI` | OAuth callback URL |
+| `CLOVER_TOKEN_BASE_URL` | Ecommerce card-token API |
+| `CLOVER_ECOMM_PUBLIC_TOKEN` | Creates sandbox card tokens |
+| `CLOVER_ECOMM_PRIVATE_TOKEN` | Pays Ecommerce orders |
+| `CLOVER_OAUTH_AUTHORIZE_URL` | Clover authorization page |
+| `CLOVER_OAUTH_API_URL` | OAuth token and refresh API |
+
+Enable read and write permissions for Orders and Payments, read permission for
+Merchant, and Ecommerce online payments in the Clover app settings
+
 ## Run
 
 ```bash
@@ -42,6 +56,24 @@ The frontend sends amount and description to `POST /api/payments`
 - pay the order with `POST /v1/orders/{order_id}/pay`
 
 The response displays payment status and appends it to `app/transaction.log`
+
+Successful responses include `"success": true`, payment status, order ID, amount
+paid, and charge ID
+
+Failed payments return `502` with Clover's error details, for example:
+
+```json
+{
+  "detail": {
+    "message": "Clover rejected the payment request",
+    "clover_error": "{\"error\":{\"code\":\"card_declined\"}}"
+  }
+}
+```
+
+If Clover reports that the sale count per card is greater than the configured
+amount, the sandbox test card has reached its transaction limit Use another
+official Clover test card or reset the sandbox test data
 
 ## Tests
 
