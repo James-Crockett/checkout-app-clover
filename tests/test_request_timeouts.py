@@ -17,7 +17,13 @@ class RequestTimeoutTests(unittest.TestCase):
         response.json.return_value = {"id": "order_id"}
 
         # Confirm create_order limits how long it waits for Clover.
-        with patch("app.clover_service.requests.post", return_value=response) as post:
+        with (
+            patch("app.clover_service.requests.post", return_value=response) as post,
+            patch(
+                "app.clover_service.load_oauth_tokens",
+                return_value={"access_token": "test_token"},
+            ),
+        ):
             create_order()
 
         self.assertEqual(post.call_args.kwargs["timeout"], 10)
@@ -28,7 +34,13 @@ class RequestTimeoutTests(unittest.TestCase):
         response.json.return_value = {"id": "line_item_id"}
 
         # Confirm add_line_item limits how long it waits for Clover.
-        with patch("app.clover_service.requests.post", return_value=response) as post:
+        with (
+            patch("app.clover_service.requests.post", return_value=response) as post,
+            patch(
+                "app.clover_service.load_oauth_tokens",
+                return_value={"access_token": "test_token"},
+            ),
+        ):
             add_line_item("order_id", "Test item", 100)
 
         self.assertEqual(post.call_args.kwargs["timeout"], 10)

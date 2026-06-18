@@ -1,3 +1,4 @@
+import json
 import os
 
 import requests
@@ -15,10 +16,16 @@ CLOVER_ECOMM_PUBLIC_TOKEN = os.getenv("CLOVER_ECOMM_PUBLIC_TOKEN")
 CLOVER_ECOMM_PRIVATE_TOKEN = os.getenv("CLOVER_ECOMM_PRIVATE_TOKEN")
 
 
+def load_oauth_tokens():
+    with open("app/oauth_tokens.json") as file:
+        return json.load(file)
+
+
 # auth call and data format
 def get_headers():
+    access_token = load_oauth_tokens()["access_token"]
     return {
-        "Authorization": f"Bearer {CLOVER_ACCESS_TOKEN}",
+        "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
 
